@@ -13,7 +13,17 @@ public class Main extends PApplet {
     private static final int WEBCAM_WIDTH = 640;
     private static final int WEBCAM_HEIGHT = 480;
     private static final int WEBCAM = 1;
-    private static int displayWidth, displayHeight;
+    private static int displayWidth;
+
+    public static int getDisplayWidth() {
+        return displayWidth;
+    }
+
+    public static int getDisplayHeight() {
+        return displayHeight;
+    }
+
+    private static int displayHeight;
 
     private static Capture webcam;
     private static Movie movie;
