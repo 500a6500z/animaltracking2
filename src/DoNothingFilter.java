@@ -9,8 +9,8 @@ public class DoNothingFilter implements PixelFilter {
     }
 
     @Override
-    public void drawOverlay(PApplet window) {
-        window.fill(255, 0, 0);
-        window.ellipse(0, 0, 10, 10);
+    public void drawOverlay(PApplet window, DImage original, DImage filtered) {
+        window.line(10, 10, 20, 20);
     }
+
 }
