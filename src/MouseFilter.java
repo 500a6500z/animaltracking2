@@ -5,12 +5,16 @@ import java.util.ArrayList;
 public class MouseFilter implements PixelFilter {
 
     private static final int TARGET = 30;
+    private int rAvg;
+    private int cAvg;
 
     @Override
     public DImage processImage(DImage img) {
+        //DImage copy = new DImage(img);
         ArrayList<Point> list = new ArrayList<>();
         short[][] pixels = img.getBWPixelGrid();
 
+        //color mask
         for(int r = 0; r < pixels.length; r++) {
             for(int c = 0; c < pixels[r].length; c++) {
                 if(Math.abs((int) pixels[r][c] - TARGET) <= 5) {
@@ -22,6 +26,7 @@ public class MouseFilter implements PixelFilter {
             }
         }
 
+        //blur
         for(int r = 0; r < pixels.length - 2; r++) {
             for(int c = 0; c < pixels[r].length - 2; c++) {
                 short avg = 0;
@@ -34,6 +39,7 @@ public class MouseFilter implements PixelFilter {
             }
         }
 
+        //color mask 2
         for(int r = 0; r < pixels.length; r++) {
             for(int c = 0; c < pixels[r].length; c++) {
                 if(Math.abs((int) pixels[r][c] - TARGET) <= 5) {
@@ -46,14 +52,17 @@ public class MouseFilter implements PixelFilter {
             }
         }
 
-        int rAvg = 0;
-        int cAvg = 0;
 
+        rAvg = 0;
+        cAvg = 0;
+
+        //get black points
         for(int i = 0; i < list.size(); i++) {
             rAvg += list.get(i).r;
             cAvg += list.get(i).c;
         }
 
+        //calculate center
         rAvg /= list.size();
         cAvg /= list.size();
 
@@ -61,11 +70,12 @@ public class MouseFilter implements PixelFilter {
 
         int[][] cPixels = img.getColorPixelGrid();
 
-        for(int i = -1; i < 2; i++) {
-            for(int j = -1; j < 2; j++) {
-                cPixels[rAvg + i][cAvg + j] = 0xFFFF0000;
-            }
-        }
+        //set red center
+//        for(int i = -1; i < 2; i++) {
+//            for(int j = -1; j < 2; j++) {
+//                cPixels[rAvg + i][cAvg + j] = 0xFFFF0000;
+//            }
+//        }
 
         img.setPixels(cPixels);
 
@@ -74,10 +84,13 @@ public class MouseFilter implements PixelFilter {
 
     @Override
     public void drawOverlay(PApplet window, DImage original, DImage filtered) {
-
+        window.fill(255,0,0);
+        window.ellipse(cAvg,rAvg, 10,10);
     }
 
-    static class Point {
+
+    //change
+    static class Point implements Comparable<Point> {
         public int r;
         public int c;
 
