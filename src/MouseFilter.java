@@ -87,9 +87,7 @@ public class MouseFilter implements PixelFilter {
         window.fill(255,0,0);
         window.ellipse(cAvg,rAvg, 10,10);
     }
-
-
-    //change
+    
     static class Point implements Comparable<Point> {
         public int r;
         public int c;
