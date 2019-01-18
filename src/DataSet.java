@@ -4,16 +4,11 @@ public class DataSet {
 
     private ArrayList<aFrame> data;
 
-    public double getDistanceTraveled() {
-        return distanceTraveled;
-    }
 
     private double distanceTraveled;
+    private double timeSpentInMiddle;
+    private double timeSpentInOuterRing;
 
-
-    //total time spent close to the wall
-    //time spent close to center
-    //Histogram of speeds. (in cm/sec)
 
     public DataSet() {
         this.data = new ArrayList<>();
@@ -27,13 +22,24 @@ public class DataSet {
         data.add(f);
     }
 
+    public double getDistanceTraveled() {
+        return distanceTraveled;
+    }
 
     public ArrayList<aFrame> getData() {
         return data;
     }
 
-    public aFrame getFrame(int index){
+    public aFrame getFrame(int index){//need to change index to time
         return data.get(index);
+    }
+
+    public double getAverageSpeed(){
+        double tot = 0;
+        for (int i = 0; i < data.size(); i++) {
+            tot+=data.get(i).getSpeed();
+        }
+        return tot/data.size();
     }
 
 }
