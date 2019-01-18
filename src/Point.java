@@ -14,4 +14,8 @@ public class Point {
         this.x = x;
         this.y = y;
     }
+
+    public double getDistance(Point center) {
+        return Math.sqrt((x-center.getX()) * (x-center.getX()) + (y-center.getY()) * (y-center.getY()));
+    }
 }
