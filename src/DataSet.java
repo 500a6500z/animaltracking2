@@ -10,10 +10,29 @@ public class DataSet {
     private double distanceTraveled;
     private double timeSpentInMiddle;
     private double timeSpentInOuterRing;
-    private Point center;
-    private double radiusFromCenter;
-    private double distanceFromWall;
+    private Point center;//uses JOptionPan
+    private double radiusFromCenter;//uses JOptionPan
+    private double distanceFromWall;//uses JOptionPane
+    private ArrayList<Interval> intervalsInOuterRing;
+    private ArrayList<Interval> TimesSpentMovingInSpeedIntervals;
+    private ArrayList<Interval> intervalsInMiddle;
 
+    public ArrayList<Interval> getIntervalsInMiddle() {
+        return intervalsInMiddle;
+    }
+
+    public ArrayList<Interval> getIntervalsInOuterRing() {
+        return intervalsInOuterRing;
+    }
+
+
+    public double getTimeSpentInMiddle() {
+        return timeSpentInMiddle;
+    }
+
+    public double getTimeSpentInOuterRing() {
+        return timeSpentInOuterRing;
+    }
 
     public DataSet() {
         radiusFromCenter = Double.parseDouble(JOptionPane.showInputDialog("radius from center? "));
@@ -30,6 +49,9 @@ public class DataSet {
         if(center.getDistance(f.getCenter()) < radiusFromCenter){
             timeSpentInMiddle += 1.0/fps;
         }
+
+        //assign time in ring here
+        // assign time codes into arraylist here
     }
 
     public double getDistanceTraveled() {
