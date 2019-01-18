@@ -5,8 +5,14 @@ public class aFrame {
     }
 
     Point center;
+
+    public double getSpeed() {
+        return speed;
+    }
+
     double speed;
-    long time;
+
+
 
 
     public double getDistanceFromCenter(){
