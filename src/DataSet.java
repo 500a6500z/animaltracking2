@@ -10,9 +10,9 @@ public class DataSet {
     private double distanceTraveled;
     private double timeSpentInMiddle;
     private double timeSpentInOuterRing;
-    private Point center;//uses JOptionPan
-    private double radiusFromCenter;//uses JOptionPan
-    private double distanceFromWall;//uses JOptionPane
+    private Point center;
+    private double radiusFromCenter;
+    private double distanceFromWall;
     private ArrayList<Interval> intervalsInOuterRing;
     private ArrayList<Interval> TimesSpentMovingInSpeedIntervals;
     private ArrayList<Interval> intervalsInMiddle;
@@ -76,8 +76,8 @@ public class DataSet {
 
     public double getAverageSpeed(){
         double tot = 0;
-        for (int i = 0; i < data.size(); i++) {
-            tot+=data.get(i).getSpeed();
+        for (aFrame frame : data) {
+            tot += frame.getSpeed();
         }
         return tot/data.size();
     }
