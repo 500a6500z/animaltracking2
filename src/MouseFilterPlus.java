@@ -2,7 +2,8 @@ import processing.core.PApplet;
 
 import java.util.ArrayList;
 
-public class MouseFilter implements PixelFilter {
+//do not use
+public class MouseFilterPlus implements PixelFilter {
 
     private static final int TARGET = 30;
     private int rAvg;
