@@ -1,7 +1,7 @@
 import javax.swing.*;
 import java.util.ArrayList;
 
-public class DataSet {
+public class DataSet implements DS{
 
     private ArrayList<aFrame> data;
 
@@ -16,6 +16,14 @@ public class DataSet {
     private ArrayList<Interval> intervalsInOuterRing;
     private ArrayList<Interval> TimesSpentMovingInSpeedIntervals;
     private ArrayList<Interval> intervalsInMiddle;
+
+
+    public DataSet() {
+        radiusFromCenter = Double.parseDouble(JOptionPane.showInputDialog("radius from center? "));
+        distanceFromWall = Double.parseDouble(JOptionPane.showInputDialog("distance from center? "));
+        this.data = new ArrayList<>();
+        this.distanceTraveled = 0;
+    }
 
     public ArrayList<Interval> getIntervalsInMiddle() {
         return intervalsInMiddle;
@@ -34,12 +42,6 @@ public class DataSet {
         return timeSpentInOuterRing;
     }
 
-    public DataSet() {
-        radiusFromCenter = Double.parseDouble(JOptionPane.showInputDialog("radius from center? "));
-        distanceFromWall = Double.parseDouble(JOptionPane.showInputDialog("distance from center? "));
-        this.data = new ArrayList<>();
-        this.distanceTraveled = 0;
-    }
 
     public void add(aFrame f){
         Point p = data.get(data.size()).getCenter();
@@ -54,7 +56,7 @@ public class DataSet {
         // assign time codes into arraylist here
     }
 
-    public double getDistanceTraveled() {
+    public double getTotalDistanceTraveled() {
         return distanceTraveled;
     }
 
@@ -82,4 +84,11 @@ public class DataSet {
         return tot/data.size();
     }
 
+    public double getDistanceFromWall() {
+        return distanceFromWall;
+    }
+
+    public void setDistanceFromWall(double distanceFromWall) {
+        this.distanceFromWall = distanceFromWall;
+    }
 }
