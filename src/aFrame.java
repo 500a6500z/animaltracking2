@@ -15,10 +15,4 @@ public class aFrame {
 
 
 
-    public double getDistanceFromCenter(){
-        double dispX = center.getX() - Main.getDisplayWidth()/2;
-        double dispY = center.getY() - Main.getDisplayHeight()/2;
-        return Math.sqrt(dispX*dispX - dispY*dispY);
-    }
-
 }

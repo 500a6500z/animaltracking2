@@ -5,6 +5,13 @@ import java.util.ArrayList;
 public class MouseFilter implements PixelFilter {
 
     private static final int TARGET = 30;
+    private int rAvg;
+    private int cAvg;
+    private boolean[][] mouseBeenHere;
+
+    public MouseFilter(){
+        mouseBeenHere = new boolean[Main.getDisplayWidth()][Main.getDisplayHeight()];
+    }
 
     @Override
     public DImage processImage(DImage img) {
@@ -64,6 +71,15 @@ public class MouseFilter implements PixelFilter {
         for(int i = -1; i < 2; i++) {
             for(int j = -1; j < 2; j++) {
                 cPixels[rAvg + i][cAvg + j] = 0xFFFF0000;
+            }
+        }
+
+        mouseBeenHere[rAvg][cAvg] = true;
+        for (int r = 0; r < cPixels.length; r++) {
+            for (int c = 0; c < cPixels[0].length; c++) {
+                if(mouseBeenHere[r][c]){
+                    cPixels[r][c] = 4377398;
+                }
             }
         }
 
