@@ -2,6 +2,7 @@ import java.util.ArrayList;
 
 public interface DS {
 
+
     public ArrayList<Interval> getIntervalsInMiddle();
 
     public ArrayList<Interval> getIntervalsInOuterRing();
@@ -28,5 +29,4 @@ public interface DS {
 
     public void setDistanceFromWall(double distanceFromWall);
 
-    
 }

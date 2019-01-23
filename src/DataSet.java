@@ -5,24 +5,23 @@ public class DataSet implements DS{
 
     private ArrayList<aFrame> data;
 
-    private final int fps = 25;//frames per second
+    private double fps, cmToPixel;
 
     private double distanceTraveled;
     private double timeSpentInMiddle;
     private double timeSpentInOuterRing;
     private Point center;
-    private double radiusFromCenter;
     private double distanceFromWall;
     private ArrayList<Interval> intervalsInOuterRing;
     private ArrayList<Interval> TimesSpentMovingInSpeedIntervals;
     private ArrayList<Interval> intervalsInMiddle;
 
 
-    public DataSet() {
-        radiusFromCenter = Double.parseDouble(JOptionPane.showInputDialog("radius from center? "));
-        distanceFromWall = Double.parseDouble(JOptionPane.showInputDialog("distance from center? "));
+    public DataSet(double fps, double cmToPixels){
         this.data = new ArrayList<>();
         this.distanceTraveled = 0;
+        this.fps = fps;
+        this.cmToPixel = cmToPixels;
     }
 
     public ArrayList<Interval> getIntervalsInMiddle() {
@@ -48,12 +47,7 @@ public class DataSet implements DS{
         distanceTraveled += Math.sqrt((p.getX() - f.getCenter().getX())*(p.getX() - f.getCenter().getX()) +
                 (p.getY() - f.getCenter().getY())*(p.getY() - f.getCenter().getY()));
         data.add(f);
-        if(center.getDistance(f.getCenter()) < radiusFromCenter){
-            timeSpentInMiddle += 1.0/fps;
-        }
 
-        //assign time in ring here
-        // assign time codes into arraylist here
     }
 
     public double getTotalDistanceTraveled() {
@@ -69,11 +63,11 @@ public class DataSet implements DS{
     }
 
     public Point getMouseLocation(double time){
-        return data.get((int)time*fps).getCenter();
+        return data.get((int)(time*fps)).getCenter();
     }
 
     public double getMouseSpeed(double time){
-        return data.get((int) time*fps).getSpeed();
+        return data.get((int)(time*fps)).getSpeed();
     }
 
     public double getAverageSpeed(){
