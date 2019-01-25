@@ -1,16 +1,17 @@
 import processing.core.PApplet;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class MouseFilter implements PixelFilter {
 
     private static final int TARGET = 30;
     private int rAvg;
     private int cAvg;
-    private boolean[][] mouseBeenHere;
+    private HashSet<Integer> path;
 
     public MouseFilter(){
-        mouseBeenHere = new boolean[Main.getDisplayWidth()][Main.getDisplayHeight()];
+        path = new HashSet<>();
     }
 
     @Override
@@ -20,7 +21,7 @@ public class MouseFilter implements PixelFilter {
 
         for(int r = 0; r < pixels.length; r++) {
             for(int c = 0; c < pixels[r].length; c++) {
-                if(Math.abs((int) pixels[r][c] - TARGET) <= 5) {
+                if(Math.abs((int) pixels[r][c] - TARGET) <= 7) {
                     pixels[r][c] = 0;
                 }
                 else {
@@ -43,7 +44,7 @@ public class MouseFilter implements PixelFilter {
 
         for(int r = 0; r < pixels.length; r++) {
             for(int c = 0; c < pixels[r].length; c++) {
-                if(Math.abs((int) pixels[r][c] - TARGET) <= 5) {
+                if(Math.abs((int) pixels[r][c] - TARGET) <= 7) {
                     pixels[r][c] = 0;
                     list.add(new Point(r, c));
                 }
@@ -68,20 +69,22 @@ public class MouseFilter implements PixelFilter {
 
         int[][] cPixels = img.getColorPixelGrid();
 
+        path.add((rAvg * img.getHeight()) + cAvg);
+        for(Integer previousPoint : path) {
+            int pathRow = previousPoint / img.getHeight();
+            int pathColumn = previousPoint % img.getHeight();
+            cPixels[pathRow][pathColumn] = 	16776960;
+        }
+
         for(int i = -1; i < 2; i++) {
             for(int j = -1; j < 2; j++) {
                 cPixels[rAvg + i][cAvg + j] = 0xFFFF0000;
             }
         }
 
-        mouseBeenHere[rAvg][cAvg] = true;
-        for (int r = 0; r < cPixels.length; r++) {
-            for (int c = 0; c < cPixels[0].length; c++) {
-                if(mouseBeenHere[r][c]){
-                    cPixels[r][c] = 4377398;
-                }
-            }
-        }
+        cPixels[100][100] = 16776960;
+        cPixels[99][99] = 16776960;
+        cPixels[98][98] = 16776960;
 
         img.setPixels(cPixels);
 
