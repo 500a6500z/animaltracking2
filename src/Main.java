@@ -42,6 +42,7 @@ public class Main extends PApplet {
     private boolean paused = false;
 
     public void settings() {
+        this.filter = loadNewFilter();
         displayVideoSourceChoiceDialog();
         size(800, 800);
         centerX = width/2;
