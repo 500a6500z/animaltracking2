@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class DataSet implements DS{
 
-    private ArrayList<aFrame> data;
+    private ArrayList<Point> data;
 
     private double fps, cmToPixel;
 
@@ -32,18 +32,13 @@ public class DataSet implements DS{
     }
 
     public ArrayList<Interval> getIntervalsInMiddle() {
-        return intervalsInMiddle;
     }
 
     public ArrayList<Interval> getIntervalsInOuterRing() {
-        return intervalsInOuterRing;
     }
 
     public double getTimeSpentInMiddle() {
-        /*
-        This would traverse through each interval in get IntervalsInMiddle and sum the times and return it
-        */
-        return timeSpentInMiddle;
+
     }
 
     public double getTimeSpentInOuterRing() {
@@ -54,12 +49,8 @@ public class DataSet implements DS{
     }
 
 
-    public void add(aFrame f){
-        Point p = data.get(data.size()).getCenter();
-        distanceTraveled += Math.sqrt((p.getX() - f.getCenter().getX())*(p.getX() - f.getCenter().getX()) +
-                (p.getY() - f.getCenter().getY())*(p.getY() - f.getCenter().getY()));
-        data.add(f);
-
+    public void add(Point pt){
+        data.add(pt);
     }
 
     public double getTotalDistanceTraveled() {
@@ -69,35 +60,24 @@ public class DataSet implements DS{
         return distanceTraveled;
     }
 
-    public ArrayList<aFrame> getData() {
+    public ArrayList<Point> getData() {
         return data;
     }
 
-    public aFrame getFrame(double time){
-        return data.get((int) (time*fps));
-    }
-
     public Point getMouseLocation(double time){
-        return data.get((int)(time*fps)).getCenter();
     }
 
     public double getMouseSpeed(double time){
-        return data.get((int)(time*fps)).getSpeed();
     }
 
     public double getAverageSpeed(){
-        double tot = 0;
-        for (aFrame frame : data) {
-            tot += frame.getSpeed();
-        }
-        return tot/data.size();
     }
 
     public double getDistanceFromWall() {
-        return distanceFromWall;
     }
 
-    public void setDistanceFromWall(double distanceFromWall) {
-        this.distanceFromWall = distanceFromWall;
+    private double getCmToPixel(int pixels) {
+
     }
+
 }

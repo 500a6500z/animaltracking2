@@ -11,13 +11,11 @@ public interface DS {
 
     public double getTimeSpentInOuterRing();
 
-    public void add(aFrame f);
+    public void add(Point f);
 
     public double getTotalDistanceTraveled();
 
-    public ArrayList<aFrame> getData();
-
-    public aFrame getFrame(double time);
+    public ArrayList<Point> getData();
 
     public Point getMouseLocation(double time);
 

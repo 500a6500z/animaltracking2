@@ -1,21 +1,21 @@
 public class Point {
 
-    public int getX() {
-        return x;
+    public int getR() {
+        return r;
     }
 
-    public int getY() {
-        return y;
+    public int getC() {
+        return c;
     }
 
-    int x, y;
+    int r, c;
 
-    public Point(int x, int y) {
-        this.x = x;
-        this.y = y;
+    public Point(int row, int col) {
+        r = row;
+        c = col;
     }
 
     public double getDistance(Point center) {
-        return Math.sqrt((x-center.getX()) * (x-center.getX()) + (y-center.getY()) * (y-center.getY()));
+        return Math.sqrt((r-center.getR()) * (r-center.getR()) + (c-center.getC()) * (c-center.getC()));
     }
 }
