@@ -1,4 +1,8 @@
-import javax.swing.*;
+/*
+David Zhang, Assaf Vayner
+The coding was only done by one partner, but the other partner was the one who created the API
+As a result, it's pretty incomplete at the moment but it will be finished
+ */
 import java.util.ArrayList;
 
 public class DataSet implements DS{
@@ -17,6 +21,9 @@ public class DataSet implements DS{
     private ArrayList<Interval> intervalsInMiddle;
 
 
+    /*
+    Data takes in Point and Speed
+     */
     public DataSet(double fps, double cmToPixels){
         this.data = new ArrayList<>();
         this.distanceTraveled = 0;
@@ -32,12 +39,17 @@ public class DataSet implements DS{
         return intervalsInOuterRing;
     }
 
-
     public double getTimeSpentInMiddle() {
+        /*
+        This would traverse through each interval in get IntervalsInMiddle and sum the times and return it
+        */
         return timeSpentInMiddle;
     }
 
     public double getTimeSpentInOuterRing() {
+        /*
+        This would traverse through each interval in geIntervalsInOuterRing and sum the times and then return it
+         */
         return timeSpentInOuterRing;
     }
 
@@ -51,6 +63,9 @@ public class DataSet implements DS{
     }
 
     public double getTotalDistanceTraveled() {
+        /*
+        this would traverse through all the points, sum the distances, and return it
+         */
         return distanceTraveled;
     }
 

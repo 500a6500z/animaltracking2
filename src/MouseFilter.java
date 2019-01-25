@@ -8,10 +8,12 @@ public class MouseFilter implements PixelFilter {
     private static final int TARGET = 30;
     private int rAvg;
     private int cAvg;
-    private HashSet<Integer> path;
+    private ArrayList<Point> path;
+    private DataSet ds;
 
     public MouseFilter(){
-        path = new HashSet<>();
+        path = new ArrayList<>();
+        ds = new DataSet(25, 0.1875);
     }
 
     @Override
@@ -54,8 +56,8 @@ public class MouseFilter implements PixelFilter {
             }
         }
 
-        int rAvg = 0;
-        int cAvg = 0;
+        rAvg = 0;
+        cAvg = 0;
 
         for(int i = 0; i < list.size(); i++) {
             rAvg += list.get(i).r;
@@ -65,34 +67,30 @@ public class MouseFilter implements PixelFilter {
         rAvg /= list.size();
         cAvg /= list.size();
 
+        /*
+        Add DataSet Centers Here
+         */
+        //ds.add(new aFrame(new Point(rAvg, cAvg), ));
+
         img.setPixels(pixels);
-
-        int[][] cPixels = img.getColorPixelGrid();
-
-        path.add((rAvg * img.getHeight()) + cAvg);
-        for(Integer previousPoint : path) {
-            int pathRow = previousPoint / img.getHeight();
-            int pathColumn = previousPoint % img.getHeight();
-            cPixels[pathRow][pathColumn] = 	16776961;
-        }
-
-        for(int i = -1; i < 2; i++) {
-            for(int j = -1; j < 2; j++) {
-                cPixels[rAvg + i][cAvg + j] = 0xFFFF0000;
-            }
-        }
-
-        cPixels[100][100] = 16776960;
-        cPixels[99][99] = 16776960;
-        cPixels[98][98] = 16776960;
-
-        img.setPixels(cPixels);
 
         return img;
     }
 
     @Override
     public void drawOverlay(PApplet window, DImage original, DImage filtered) {
+        window.stroke(0, 255, 255);
+        System.out.println(path.size());
+        for(int i = 1; i < path.size(); i++) {
+            int pathRow1 = path.get(i).r;
+            int pathCol1 = path.get(i).c;
+            int pathRow2 = path.get(i - 1).r;
+            int pathCol2 = path.get(i - 1).c;
+            window.line(pathCol1, pathRow1, pathCol2, pathRow2);
+        }
+
+        window.fill(255, 0, 0);
+        window.ellipse(cAvg, rAvg, 5, 5);
 
     }
 
