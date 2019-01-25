@@ -73,7 +73,7 @@ public class MouseFilter implements PixelFilter {
         for(Integer previousPoint : path) {
             int pathRow = previousPoint / img.getHeight();
             int pathColumn = previousPoint % img.getHeight();
-            cPixels[pathRow][pathColumn] = 	16776960;
+            cPixels[pathRow][pathColumn] = 	16776961;
         }
 
         for(int i = -1; i < 2; i++) {
