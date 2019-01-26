@@ -8,6 +8,8 @@ public class MouseFilter implements PixelFilter {
     private static final int TARGET_RADIUS = 200;
     private static final int CENTER_COLUMN = 308;
     private static final int CENTER_ROW = 232;
+    private static final int FIELD_RADIUS = 240;
+    private static final int INNER_RADIUS = 120;
     private Point center;
     private int rAvg;
     private int cAvg;
@@ -17,12 +19,12 @@ public class MouseFilter implements PixelFilter {
     public MouseFilter(){
         path = new ArrayList<>();
         center = new Point(CENTER_ROW, CENTER_COLUMN);
-        ds = new DataSet(25, 0.1875);
+        ds = new DataSet(25, 5.333, center, FIELD_RADIUS, INNER_RADIUS);
     }
 
     @Override
     public DImage processImage(DImage img) {
-        ArrayList<Point> list = new ArrayList<>();
+        ArrayList<Point> mousePoints = new ArrayList<>();
         short[][] pixels = img.getBWPixelGrid();
 
         for(int r = 0; r < img.getHeight(); r++) {
@@ -31,7 +33,7 @@ public class MouseFilter implements PixelFilter {
 
                 if(ptRadius < TARGET_RADIUS && pixels[r][c] < 100) {
                     pixels[r][c] = 255;
-                    list.add(new Point(r, c));
+                    mousePoints.add(new Point(r, c));
                 }
                 else {
                     pixels[r][c] = 0;
@@ -42,13 +44,13 @@ public class MouseFilter implements PixelFilter {
         rAvg = 0;
         cAvg = 0;
 
-        for(int i = 0; i < list.size(); i++) {
-            rAvg += list.get(i).getR();
-            cAvg += list.get(i).getC();
+        for(int i = 0; i < mousePoints.size(); i++) {
+            rAvg += mousePoints.get(i).getR();
+            cAvg += mousePoints.get(i).getC();
         }
 
-        rAvg /= list.size();
-        cAvg /= list.size();
+        rAvg /= mousePoints.size();
+        cAvg /= mousePoints.size();
 
         ds.add(new Point(rAvg, cAvg));
 

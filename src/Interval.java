@@ -17,6 +17,10 @@ public class Interval {
         Tf = tf;
     }
 
+    public double getDuration() {
+        return Tf - Ti;
+    }
+
     double Ti,Tf;
 
 }

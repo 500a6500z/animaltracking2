@@ -11,73 +11,199 @@ public class DataSet implements DS{
 
     private double fps, cmToPixel;
 
-    private double distanceTraveled;
-    private double timeSpentInMiddle;
-    private double timeSpentInOuterRing;
     private Point center;
-    private double distanceFromWall;
-    private ArrayList<Interval> intervalsInOuterRing;
-    private ArrayList<Interval> TimesSpentMovingInSpeedIntervals;
-    private ArrayList<Interval> intervalsInMiddle;
+    private int fieldRadius;
+    private int innerRadius;
 
 
-    /*
-    Data takes in Point and Speed
+    /**
+     * Constructs a new DataSet
+     * @param fps the frames per second that the video is recorded in
+     * @param cmToPixels the conversion rate for how many pixels represent a centimeter
+     * @param center the Point that represents the center of the field
+     * @param fieldRadius the radius of the field in pixels
+     * @param innerRadius the radius of the inner "ring" region of the field in pixels
      */
-    public DataSet(double fps, double cmToPixels){
+    public DataSet(double fps, double cmToPixels, Point center, int fieldRadius, int innerRadius){
         this.data = new ArrayList<>();
-        this.distanceTraveled = 0;
         this.fps = fps;
         this.cmToPixel = cmToPixels;
+        this.center = center;
+        this.fieldRadius = fieldRadius;
+        this.innerRadius = innerRadius;
     }
 
-    public ArrayList<Interval> getIntervalsInMiddle() {
+    /**
+     * Returns the intervals in which the mouse is in the inner region of the field
+     * @return an ArrayList containing the various intervals in which the mouse is in the inner region of the field
+     */
+    public ArrayList<Interval> getIntervalsInInnerRegion() {
+        ArrayList<Interval> intervals = new ArrayList<>();
+        boolean inInterval = false;
+        for(int i = 0; i < data.size(); i++) {
+            if(inInnerRegion(data.get(i))) {
+                if(!inInterval) {
+                    intervals.add(new Interval(i / fps));
+                }
+                else {
+                    intervals.get(intervals.size() - 1).setTf(i / fps);
+                }
+            }
+            else {
+                inInterval = false;
+            }
+        }
+        return intervals;
     }
 
-    public ArrayList<Interval> getIntervalsInOuterRing() {
+    /**
+     * Returns the intervals in which the mouse is in the outer region of the field
+     * @return an ArrayList containing the various intervals in which the mouse is in the outer region of the field
+     */
+    public ArrayList<Interval> getIntervalsInOuterRegion() {
+        ArrayList<Interval> intervals = new ArrayList<>();
+        boolean inInterval = false;
+        for(int i = 0; i < data.size(); i++) {
+            if(!inInnerRegion(data.get(i))) {
+                if(!inInterval) {
+                    intervals.add(new Interval(i / fps));
+                }
+                else {
+                    intervals.get(intervals.size() - 1).setTf(i / fps);
+                }
+            }
+            else {
+                inInterval = false;
+            }
+        }
+        return intervals;
     }
 
-    public double getTimeSpentInMiddle() {
-
+    /**
+     * Returns the total amount of time spent by the mouse in the inner region of the field
+     * @return the amount of time in seconds
+     */
+    public double getTimeSpentInInnerRegion() {
+        ArrayList<Interval> intervals = getIntervalsInInnerRegion();
+        double time = 0;
+        for(int i = 0; i < intervals.size(); i++) {
+            time += intervals.get(i).getDuration();
+        }
+        return time;
     }
 
-    public double getTimeSpentInOuterRing() {
-        /*
-        This would traverse through each interval in geIntervalsInOuterRing and sum the times and then return it
-         */
-        return timeSpentInOuterRing;
+    /**
+     * Returns the total amount of time spent by the mouse in the outer region of the field
+     * @return the amount of time in seconds
+     */
+    public double getTimeSpentInOuterRegion() {
+        ArrayList<Interval> intervals = getIntervalsInOuterRegion();
+        double time = 0;
+        for(int i = 0; i < intervals.size(); i++) {
+            time += intervals.get(i).getDuration();
+        }
+        return time;
     }
 
-
+    /**
+     * Adds a Point to the DataSet
+     * @param pt the Point to be added
+     */
     public void add(Point pt){
         data.add(pt);
     }
 
-    public double getTotalDistanceTraveled() {
-        /*
-        this would traverse through all the points, sum the distances, and return it
-         */
-        return distanceTraveled;
+    /**
+     * Returns the total distance traveled by the mouse in the specifed interval
+     * @param start the starting time of interest in seconds
+     * @param end the ending time of interest in seconds
+     * @return the total distance traveled in centimeters
+     */
+    public double getTotalDistanceTraveled(double start, double end) {
+        int startFrames = (int) (start / fps);
+        int endFrames = (int) (end / fps);
+
+        int pixelsTraveled = 0;
+
+        for(int i = startFrames + 1; i < endFrames; i++) {
+            pixelsTraveled += data.get(i).getDistance(data.get(i-1));
+        }
+        return getCmToPixel(pixelsTraveled);
     }
 
+    /**
+     * Returns all the previous locations of the mouse
+     * @return an ArrayList containing all the previous locations of the mouse, in Point format
+     */
     public ArrayList<Point> getData() {
         return data;
     }
 
+    /**
+     * Returns the mouse's location at the specified time
+     * @param time the time of interest, in seconds
+     * @return the Point containing the location of the mouse
+     */
     public Point getMouseLocation(double time){
+        int frame = (int) (time * fps);
+        return data.get(frame);
     }
 
+    /**
+     * Returns the mouse's speed at the specified time
+     * @param time the time of interest, in seconds
+     * @return the speed of the mouse, in centimeters per second
+     */
     public double getMouseSpeed(double time){
+        if(time == 0) {
+            return 0;
+        }
+        int frame = (int) (time * fps);
+        double distance = data.get(frame).getDistance(data.get(frame - 1));
+        return distance / (1/fps);
     }
 
-    public double getAverageSpeed(){
+    /**
+     * Returns the mouse's average speed over a specified interval
+     * @param start the starting time of interest, in seconds
+     * @param end the ending time of interest, in seconds
+     * @return the average speed of the mouse, in centimeters per second
+     */
+    public double getAverageSpeed(double start, double end){
+        int startFrames = (int) (start / fps);
+        int endFrames = (int) (end / fps);
+
+        if(endFrames == startFrames) {
+            return 0;
+        }
+
+        double totalSpeed = 0;
+
+        for(int i = startFrames + 1; i < endFrames; i++) {
+            totalSpeed += getMouseSpeed(i);
+        }
+
+        return totalSpeed / (endFrames - startFrames);
     }
 
-    public double getDistanceFromWall() {
+    /**
+     * Returns the mouse's closest distance to the wall at the specified time
+     * @param time the time of interest, in seconds
+     * @return the mouse's distance from the wall in centimeters
+     */
+    public double getDistanceFromWall(double time) {
+        int frame = (int) (time * fps);
+        double distanceFromCenter = data.get(frame).getDistance(center);
+        return getCmToPixel((int) (fieldRadius - distanceFromCenter));
+
     }
 
     private double getCmToPixel(int pixels) {
+        return (double) pixels / cmToPixel;
+    }
 
+    private boolean inInnerRegion(Point pt) {
+        return center.getDistance(pt) <= innerRadius;
     }
 
 }
