@@ -1,7 +1,6 @@
 import processing.core.PApplet;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 
 public class MouseFilter implements PixelFilter {
 

@@ -1,7 +1,5 @@
 /*
 David Zhang, Assaf Vayner
-The coding was only done by one partner, but the other partner was the one who created the API
-As a result, it's pretty incomplete at the moment but it will be finished
  */
 import java.util.ArrayList;
 
@@ -80,6 +78,31 @@ public class DataSet implements DS{
     }
 
     /**
+     * Returns the intervals in which the mouse is moving at a speed within a specified range
+     * @param speed the specified speed in centimeters per second
+     * @param threshold the tolerance for what speed constitutes as valid
+     * @return an ArrayList containing the various intervals in which the mouse is moving at a certain speed
+     */
+    public ArrayList<Interval> getIntervalsAtSpeed(double speed, double threshold) {
+        ArrayList<Interval> intervals = new ArrayList<>();
+        boolean inInterval = false;
+        for(int i = 0; i < data.size(); i++) {
+            if(Math.abs(getMouseSpeed(i / fps) - speed) <= threshold) {
+                if(!inInterval) {
+                    intervals.add(new Interval(i / fps));
+                }
+                else {
+                    intervals.get(intervals.size() - 1).setTf(i / fps);
+                }
+            }
+            else {
+                inInterval = false;
+            }
+        }
+        return intervals;
+    }
+
+    /**
      * Returns the total amount of time spent by the mouse in the inner region of the field
      * @return the amount of time in seconds
      */
@@ -98,6 +121,21 @@ public class DataSet implements DS{
      */
     public double getTimeSpentInOuterRegion() {
         ArrayList<Interval> intervals = getIntervalsInOuterRegion();
+        double time = 0;
+        for(int i = 0; i < intervals.size(); i++) {
+            time += intervals.get(i).getDuration();
+        }
+        return time;
+    }
+
+    /**
+     * Returns the total amount of time spent by the mouse at a specified speed
+     * @param speed the specified speed in centimeters per second
+     * @param threshold the tolerance for what speed constiutes as valid
+     * @return the amount of time in seconds
+     */
+    public double getTimeSpentAtSpeed(double speed, double threshold) {
+        ArrayList<Interval> intervals = getIntervalsAtSpeed(speed, threshold);
         double time = 0;
         for(int i = 0; i < intervals.size(); i++) {
             time += intervals.get(i).getDuration();

@@ -7,9 +7,13 @@ public interface DS {
 
     public ArrayList<Interval> getIntervalsInOuterRegion();
 
+    public ArrayList<Interval> getIntervalsAtSpeed(double speed, double threshold);
+
     public double getTimeSpentInInnerRegion();
 
     public double getTimeSpentInOuterRegion();
+
+    public double getTimeSpentAtSpeed(double speed, double threshold);
 
     public void add(Point f);
 
