@@ -1,7 +1,12 @@
 /*
 David Zhang, Assaf Vayner
  */
+import java.io.BufferedInputStream;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class DataSet implements DS{
 
@@ -242,6 +247,34 @@ public class DataSet implements DS{
 
     private boolean inInnerRegion(Point pt) {
         return center.getDistance(pt) <= innerRadius;
+    }
+
+
+    private void writeDataToFile(String filePath, String dataStr){
+        File outFile = new File(filePath);
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(outFile))){
+            writer.write(dataStr);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+
+    private String readFileAsString(String filePath){
+        StringBuilder output = new StringBuilder();
+
+        try(Scanner scanner = new Scanner(new File(filePath))){
+            while(scanner.hasNext()){
+                String line = scanner.nextLine();
+                output.append(line + System.getProperty("Line.separator"));
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return output.toString();
     }
 
 }
