@@ -291,5 +291,14 @@ public class DataSet implements DS{
         }
     }
 
+    public void saveDataToFile(String file) {
+        StringBuilder output = new StringBuilder();
+        for(int i = 0; i < data.size(); i++) {
+            output.append(data.get(i).toString() + "\n");
+        }
+
+        writeDataToFile(file, output.toString());
+    }
+
 }
 
