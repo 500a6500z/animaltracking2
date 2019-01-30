@@ -33,6 +33,10 @@ public class Point {
         return Math.sqrt((r-center.getR()) * (r-center.getR()) + (c-center.getC()) * (c-center.getC()));
     }
 
+    /**
+     * Returns the Point data as a String
+     * @return String in format "row,col"
+     */
     public String toString() {
         return r + "," + c;
     }
