@@ -36,6 +36,10 @@ public class DataSet implements DS{
         this.innerRadius = innerRadius;
     }
 
+    public DataSet(String fileName){
+        loadDataFromFile(fileName);
+    }
+
     /**
      * Returns the intervals in which the mouse is in the inner region of the field
      * @return an ArrayList containing the various intervals in which the mouse is in the inner region of the field
@@ -277,13 +281,15 @@ public class DataSet implements DS{
         return output.toString();
     }
 
-    public void saveDataToFile(String file) {
-        StringBuilder output = new StringBuilder();
-        for(int i = 0; i < data.size(); i++) {
-            output.append(data.get(i).toString() + "\n");
-        }
+    public void loadDataFromFile(String file){
+        String dataFromFile = readFileAsString(file);
+        String[] dataPointsAsStrings = dataFromFile.split("\n");
+        this.data = new ArrayList<>();
 
-        writeDataToFile(file, output.toString());
+        for (String str : dataPointsAsStrings) {
+            data.add(new Point(str.trim()));
+        }
     }
 
 }
+
