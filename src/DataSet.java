@@ -63,6 +63,16 @@ public class DataSet implements DS{
         return intervals;
     }
 
+
+    /**
+     * prints all points in DataSet
+     */
+    public void print(){
+        for (Point p : data) {
+            System.out.println(p.toString());
+        }
+    }
+
     /**
      * Returns the intervals in which the mouse is in the outer region of the field
      * @return an ArrayList containing the various intervals in which the mouse is in the outer region of the field
@@ -281,6 +291,10 @@ public class DataSet implements DS{
         return output.toString();
     }
 
+    /** retrieves the DataSet from file
+     * @param file the name of the file
+     *
+     */
     public void loadDataFromFile(String file){
         String dataFromFile = readFileAsString(file);
         String[] dataPointsAsStrings = dataFromFile.split("\n");
@@ -291,5 +305,21 @@ public class DataSet implements DS{
         }
     }
 
-}
+    /** Returns the number of frames
+     * @return the number of frames
+     */
+    public int size(){
+        return data.size();
+    }
 
+    
+    public void saveDataToFile(String file) {
+        StringBuilder output = new StringBuilder();
+        for(int i = 0; i < data.size(); i++) {
+            output.append(data.get(i).toString() + "\n");
+        }
+
+        writeDataToFile(file, output.toString());
+    }
+
+}

@@ -2,7 +2,6 @@ import java.util.ArrayList;
 
 public interface DS {
 
-
     public ArrayList<Interval> getIntervalsInInnerRegion();
 
     public ArrayList<Interval> getIntervalsInOuterRegion();
