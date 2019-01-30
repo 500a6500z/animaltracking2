@@ -32,4 +32,8 @@ public class Point {
     public double getDistance(Point center) {
         return Math.sqrt((r-center.getR()) * (r-center.getR()) + (c-center.getC()) * (c-center.getC()));
     }
+
+    public String toString() {
+        return r + "," + c;
+    }
 }
