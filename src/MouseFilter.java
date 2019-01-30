@@ -53,7 +53,7 @@ public class MouseFilter implements PixelFilter {
 
         ds.add(new Point(rAvg, cAvg));
 
-        if(ds.size() == 9994){
+        if(ds.size() == 300){
             ds.saveDataToFile("Mouse Data");
         }
         img.setPixels(pixels);
