@@ -51,18 +51,17 @@ public class DataSet implements DS{
      */
     public ArrayList<Interval> getIntervalsInInnerRegion() {
         ArrayList<Interval> intervals = new ArrayList<>();
-        boolean inInterval = false;
         for(int i = 0; i < data.size(); i++) {
             if(inInnerRegion(data.get(i))) {
-                if(!inInterval) {
-                    intervals.add(new Interval(i / fps));
+                intervals.add(new Interval(i / fps));
+                while (inInnerRegion(data.get(i))) {
+                    i++;
+                    if(i == 9994){
+                        intervals.get(intervals.size() - 1).setTf(i / fps);
+                        return intervals;
+                    }
                 }
-                else {
-                    intervals.get(intervals.size() - 1).setTf(i / fps);
-                }
-            }
-            else {
-                inInterval = false;
+                intervals.get(intervals.size() - 1).setTf(i / fps);
             }
         }
         return intervals;
@@ -84,22 +83,23 @@ public class DataSet implements DS{
      */
     public ArrayList<Interval> getIntervalsInOuterRegion() {
         ArrayList<Interval> intervals = new ArrayList<>();
-        boolean inInterval = false;
         for(int i = 0; i < data.size(); i++) {
             if(!inInnerRegion(data.get(i))) {
-                if(!inInterval) {
-                    intervals.add(new Interval(i / fps));
+                intervals.add(new Interval(i / fps));
+                while (!inInnerRegion(data.get(i))) {
+                    i++;
+                    if(i == 9994){
+                        intervals.get(intervals.size() - 1).setTf(i / fps);
+                        return intervals;
+                    }
                 }
-                else {
-                    intervals.get(intervals.size() - 1).setTf(i / fps);
-                }
-            }
-            else {
-                inInterval = false;
+                intervals.get(intervals.size() - 1).setTf(i / fps);
             }
         }
         return intervals;
     }
+
+
 
     /**
      * Returns the intervals in which the mouse is moving at a speed within a specified range
@@ -109,18 +109,17 @@ public class DataSet implements DS{
      */
     public ArrayList<Interval> getIntervalsAtSpeed(double speed, double threshold) {
         ArrayList<Interval> intervals = new ArrayList<>();
-        boolean inInterval = false;
-        for(int i = 0; i < data.size(); i++) {
-            if(Math.abs(getMouseSpeed(i / fps) - speed) <= threshold) {
-                if(!inInterval) {
-                    intervals.add(new Interval(i / fps));
+        for (int i = 0; i < data.size(); i++) {
+            if (Math.abs(getMouseSpeed(i / fps) - speed) <= threshold) {
+                intervals.add(new Interval(i / fps));
+                while (Math.abs(getMouseSpeed(i / fps) - speed) <= threshold) {
+                    i++;
+                    if(i == 9994){
+                        intervals.get(intervals.size() - 1).setTf(i / fps);
+                        return intervals;
+                    }
                 }
-                else {
-                    intervals.get(intervals.size() - 1).setTf(i / fps);
-                }
-            }
-            else {
-                inInterval = false;
+                intervals.get(intervals.size() - 1).setTf(i / fps);
             }
         }
         return intervals;
@@ -134,6 +133,7 @@ public class DataSet implements DS{
         ArrayList<Interval> intervals = getIntervalsInInnerRegion();
         double time = 0;
         for(int i = 0; i < intervals.size(); i++) {
+            System.out.println(intervals.get(i).getDuration());
             time += intervals.get(i).getDuration();
         }
         return time;
@@ -173,6 +173,14 @@ public class DataSet implements DS{
      */
     public void add(Point pt){
         data.add(pt);
+    }
+
+    public double getTotalDistanceTraveled(){
+        double dist = 0;
+        for (int p = 1; p < data.size(); p++) {
+            dist += data.get(p).getDistance(data.get(p-1));
+        }
+        return dist;
     }
 
     /**
@@ -222,12 +230,15 @@ public class DataSet implements DS{
         }
         int frame = (int) (time * fps);
         double distance = data.get(frame).getDistance(data.get(frame - 1));
-        return distance / (1/fps);
+        return cmToPixel*distance / (1/fps);
     }
 
     public double getMouseSpeed(int frame){
+        if(frame == 0) {
+            return 0;
+        }
         double distance = data.get(frame).getDistance(data.get(frame - 1));
-        return distance / (1/fps);
+        return cmToPixel*distance / (1/fps);
     }
 
     /**
@@ -326,7 +337,7 @@ public class DataSet implements DS{
     }
 
     public double getMaxSpeed(){
-        double max = Double.MIN_VALUE;
+        double max = 0;
         for(int i = 0; i < data.size(); i++) {
             if(max < this.getMouseSpeed(i)) {
                 max = this.getMouseSpeed(i);
