@@ -319,6 +319,15 @@ public class DataSet implements DS{
             output.append(data.get(i).toString() + "\n");
         }
 
+        output.append("total distance: " + getTotalDistanceTraveled(0, 9994) + "\n");
+        //time spent within 10cm of perimeter wall
+        //percent of overall time spent within 10cm of perimeter wall
+        //total time spent in radius 10 cm circle in middle of enclosure
+        //total amount of time mouse moving slower than 3 cm/sec
+        //maximum speed
+        //total time mouse moving at .8 of speed or faster
+        //longest time mouse went without being 10cm of wall
+
         writeDataToFile(file, output.toString());
     }
 
