@@ -1,7 +1,6 @@
 /*
 David Zhang, Assaf Vayner
  */
-import java.io.BufferedInputStream;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -293,7 +292,6 @@ public class DataSet implements DS{
 
     /** retrieves the DataSet from file
      * @param file the name of the file
-     *
      */
     public void loadDataFromFile(String file){
         String dataFromFile = readFileAsString(file);
@@ -312,7 +310,7 @@ public class DataSet implements DS{
         return data.size();
     }
 
-    
+
     public void saveDataToFile(String file) {
         StringBuilder output = new StringBuilder();
         for(int i = 0; i < data.size(); i++) {
