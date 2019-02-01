@@ -220,6 +220,11 @@ public class DataSet implements DS{
         return distance / (1/fps);
     }
 
+    public double getMouseSpeed(int frame){
+        double distance = data.get(frame).getDistance(data.get(frame - 1));
+        return distance / (1/fps);
+    }
+
     /**
      * Returns the mouse's average speed over a specified interval
      * @param start the starting time of interest, in seconds
