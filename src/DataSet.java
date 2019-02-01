@@ -5,6 +5,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class DataSet implements DS{
@@ -280,7 +281,7 @@ public class DataSet implements DS{
         try(Scanner scanner = new Scanner(new File(filePath))){
             while(scanner.hasNext()){
                 String line = scanner.nextLine();
-                output.append(line + System.getProperty("Line.separator"));
+                output.append(line).append("\n");
             }
         }
         catch (Exception e){
@@ -295,11 +296,15 @@ public class DataSet implements DS{
      */
     public void loadDataFromFile(String file){
         String dataFromFile = readFileAsString(file);
+        //System.out.println("funny:" + dataFromFile);
+        //dataFromFile = dataFromFile.replace("\\n", "NEWLINE");
+        //System.out.println(dataFromFile);
         String[] dataPointsAsStrings = dataFromFile.split("\n");
+        //System.out.println(Arrays.toString(dataPointsAsStrings));
         this.data = new ArrayList<>();
 
         for (String str : dataPointsAsStrings) {
-            data.add(new Point(str.trim()));
+            data.add(new Point(str));
         }
     }
 
@@ -314,10 +319,10 @@ public class DataSet implements DS{
     public void saveDataToFile(String file) {
         StringBuilder output = new StringBuilder();
         for(int i = 0; i < data.size(); i++) {
-            output.append(data.get(i).toString() + "\n");
+            output.append(data.get(i).toString()).append("\n");
         }
 
-        output.append("total distance: " + getTotalDistanceTraveled(0, 9994) + "\n");
+        //output.append("total distance: ").append(getTotalDistanceTraveled(0, 9994)).append("\n");
         //time spent within 10cm of perimeter wall
         //percent of overall time spent within 10cm of perimeter wall
         //total time spent in radius 10 cm circle in middle of enclosure

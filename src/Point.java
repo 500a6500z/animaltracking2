@@ -25,8 +25,8 @@ public class Point {
      * @param str String in the format "row,col" where row and col are the coordinates
      */
     public Point(String str) {
-        this.r = Integer.parseInt(str.substring(0, str.indexOf(',')).trim());
-        this.c = Integer.parseInt(str.substring(str.indexOf(',') + 1).trim());
+        this.r = Integer.parseInt(str.substring(0, str.indexOf(",")));
+        this.c = Integer.parseInt(str.substring(str.indexOf(",") + 1));
     }
 
     public double getDistance(Point center) {
