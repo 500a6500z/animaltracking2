@@ -36,8 +36,13 @@ public class DataSet implements DS{
         this.innerRadius = innerRadius;
     }
 
-    public DataSet(String fileName){
+    public DataSet(String fileName,double fps, double cmToPixels, Point center, int fieldRadius, int innerRadius){
         loadDataFromFile(fileName);
+        this.fps = fps;
+        this.cmToPixel = cmToPixels;
+        this.center = center;
+        this.fieldRadius = fieldRadius;
+        this.innerRadius = innerRadius;
     }
 
     /**
@@ -320,6 +325,15 @@ public class DataSet implements DS{
         return data.size();
     }
 
+    public double getMaxSpeed(){
+        double max = Double.MIN_VALUE;
+        for(int i = 0; i < data.size(); i++) {
+            if(max < this.getMouseSpeed(i)) {
+                max = this.getMouseSpeed(i);
+            }
+        }
+        return max;
+    }
 
     public void saveDataToFile(String file) {
         StringBuilder output = new StringBuilder();
