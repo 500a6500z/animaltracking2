@@ -4,7 +4,7 @@ public class getDataSetFromFile {
     private static final int CENTER_COLUMN = 308;
     private static final int CENTER_ROW = 232;
     private static final int FIELD_RADIUS = 240;
-    private static final int INNER_RADIUS = 53;
+    private static final int INNER_RADIUS = 187;
     private static Point center = new Point(CENTER_ROW, CENTER_COLUMN);
 
 
